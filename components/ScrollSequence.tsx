@@ -223,6 +223,7 @@ export default function ScrollSequence() {
       fragmentShader: FRAGMENT_SHADER,
       depthTest: false,
       depthWrite: false,
+      blending: THREE.NoBlending,
     });
 
     const geometry = new THREE.PlaneGeometry(2, 2);
