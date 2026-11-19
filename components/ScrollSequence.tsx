@@ -32,6 +32,7 @@ const FRAGMENT_SHADER = /* glsl */ `
   uniform vec2 uResolution;
   uniform float uImageAspect;
   uniform float uFocusX;
+  uniform float uDesplazamiento; // desplazamiento UV hacia la derecha para ocultar muro blanco
 
   vec2 coverUv(vec2 uv) {
     float screenAspect = uResolution.x / max(uResolution.y, 1.0);
@@ -46,6 +47,16 @@ const FRAGMENT_SHADER = /* glsl */ `
 
     float ox = (1.0 - sx) * uFocusX;
     float oy = (1.0 - sy) * 0.5;
+
+    // Desplazar la ventana hacia la derecha y aplicar zoom para llenar la pantalla sin deformar proporción
+    if (uDesplazamiento > 0.0) {
+      float newSx = max(0.001, sx - uDesplazamiento);
+      float zoom = sx / newSx;
+      float newSy = sy / zoom;
+      float newOx = ox + uDesplazamiento;
+      float newOy = (1.0 - newSy) * 0.5;
+      return vec2(newOx + uv.x * newSx, newOy + uv.y * newSy);
+    }
 
     return vec2(ox + uv.x * sx, oy + uv.y * sy);
   }
@@ -149,6 +160,53 @@ export default function ScrollSequence() {
     );
     placeholder.needsUpdate = true;
 
+    // Tabla de borde derecho del muro blanco (px sobre 1280 de ancho, índice 0-based = frame - 1)
+    // Medidas de Anny: frame 130→0, 140→205, 145→230, 150→200, 155→166, 170→105, 180→64, 185→25, 190→0
+    // Convertidas a índice 0-based (frame N → index N-1)
+    const WHITE_WALL_KEYFRAMES: Array<[number, number]> = [
+      [129, 0],
+      [139, 205],
+      [144, 230],
+      [149, 200],
+      [154, 166],
+      [169, 105],
+      [179, 64],
+      [184, 25],
+      [189, 0],
+    ];
+
+    /** Interpola linealmente la posición del borde derecho del muro blanco (px) en el índice dado. */
+    const whiteWallBorderPx = (index: number): number => {
+      if (index <= WHITE_WALL_KEYFRAMES[0][0]) return 0;
+      if (index >= WHITE_WALL_KEYFRAMES[WHITE_WALL_KEYFRAMES.length - 1][0]) return 0;
+      for (let i = 1; i < WHITE_WALL_KEYFRAMES.length; i++) {
+        const [x0, y0] = WHITE_WALL_KEYFRAMES[i - 1];
+        const [x1, y1] = WHITE_WALL_KEYFRAMES[i];
+        if (index >= x0 && index <= x1) {
+          const t = (index - x0) / (x1 - x0);
+          return y0 + t * (y1 - y0);
+        }
+      }
+      return 0;
+    };
+
+    /** Calcula el desplazamiento UV (0–1) necesario para ocultar el muro blanco
+     *  dado el índice de frame actual y la resolución actual del viewport. */
+    const computeDesplazamiento = (index: number, vpWidth: number, vpHeight: number): number => {
+      const borderPx = whiteWallBorderPx(index);
+      if (borderPx <= 0) return 0;
+
+      const SAFETY_PX = 20;
+      const borderUv = (borderPx + SAFETY_PX) / 1280;
+
+      const screenAspect = vpWidth / Math.max(vpHeight, 1);
+      const anchoVisible = Math.min(1.0, screenAspect / IMAGE_ASPECT);
+      const izquierdaVisible = FOCUS_X - anchoVisible / 2;
+
+      // Si el muro ya queda fuera del encuadre izquierdo, no hace falta desplazar.
+      return Math.max(0, borderUv - izquierdaVisible);
+    };
+
     const uniforms = {
       uTexA: { value: placeholder as THREE.Texture },
       uResolution: {
@@ -156,6 +214,7 @@ export default function ScrollSequence() {
       },
       uImageAspect: { value: IMAGE_ASPECT },
       uFocusX: { value: FOCUS_X },
+      uDesplazamiento: { value: 0.0 },
     };
 
     const material = new THREE.ShaderMaterial({
@@ -359,6 +418,13 @@ export default function ScrollSequence() {
       );
       const entry = textures.get(frameIndex) ?? nearestTexture(frameIndex);
       uniforms.uTexA.value = entry?.texture ?? placeholder;
+
+      // Desplazamiento UV para ocultar el muro blanco en los frames 130–190 (en escritorio).
+      uniforms.uDesplazamiento.value = computeDesplazamiento(
+        smoothIndex,
+        uniforms.uResolution.value.x,
+        uniforms.uResolution.value.y,
+      );
 
       renderer.render(scene, camera);
 
