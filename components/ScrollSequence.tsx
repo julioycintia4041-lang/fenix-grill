@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Lenis from "lenis";
 import * as THREE from "three";
 
-const FRAME_COUNT = 242;
+const FRAME_COUNT = 240;
 const IMAGE_ASPECT = 1280 / 720;
 const FOCUS_X = 0.51;
 const LOAD_CONCURRENCY = 6;
