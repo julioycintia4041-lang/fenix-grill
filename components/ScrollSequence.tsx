@@ -29,11 +29,9 @@ const FRAGMENT_SHADER = /* glsl */ `
 
   varying vec2 vUv;
   uniform sampler2D uTexA;
-  uniform sampler2D uTexB;
   uniform vec2 uResolution;
   uniform float uImageAspect;
   uniform float uFocusX;
-  uniform float uMix;
 
   vec2 coverUv(vec2 uv) {
     float screenAspect = uResolution.x / max(uResolution.y, 1.0);
@@ -57,10 +55,7 @@ const FRAGMENT_SHADER = /* glsl */ `
     // Los ImageBitmap se suben sin voltear: se invierte V aquí.
     uv.y = 1.0 - uv.y;
 
-    vec3 colorA = texture2D(uTexA, uv).rgb;
-    vec3 colorB = texture2D(uTexB, uv).rgb;
-
-    gl_FragColor = vec4(mix(colorA, colorB, uMix), 1.0);
+    gl_FragColor = vec4(texture2D(uTexA, uv).rgb, 1.0);
   }
 `;
 
@@ -156,8 +151,6 @@ export default function ScrollSequence() {
 
     const uniforms = {
       uTexA: { value: placeholder as THREE.Texture },
-      uTexB: { value: placeholder as THREE.Texture },
-      uMix: { value: 0 },
       uResolution: {
         value: new THREE.Vector2(window.innerWidth, window.innerHeight),
       },
@@ -337,8 +330,6 @@ export default function ScrollSequence() {
     let smoothIndex = 0;
     let previousTime = performance.now();
     let animationFrame = 0;
-    let lastScrollTop = -1;
-    let idleTime = 0;
 
     const tick = (time: number) => {
       animationFrame = requestAnimationFrame(tick);
@@ -354,43 +345,25 @@ export default function ScrollSequence() {
       const scrollTop = Math.min(Math.max(lenis.scroll, 0), maxScroll);
       const scrollProgress = maxScroll > 0 ? scrollTop / maxScroll : 0;
 
-      if (Math.abs(scrollTop - lastScrollTop) < 0.5) {
-        idleTime += delta;
-      } else {
-        idleTime = 0;
-      }
-      lastScrollTop = scrollTop;
-
-      // En reposo se asienta en un frame entero (evita el doble contorno del crossfade).
-      const targetIndex =
-        idleTime > 0.2
-          ? Math.round(scrollProgress * (FRAME_COUNT - 1))
-          : scrollProgress * (FRAME_COUNT - 1);
+      const targetIndex = scrollProgress * (FRAME_COUNT - 1);
 
       smoothIndex += (targetIndex - smoothIndex) * (1 - Math.exp(-12 * delta));
       if (Math.abs(targetIndex - smoothIndex) < 0.002) {
         smoothIndex = targetIndex;
       }
 
-      const base = Math.min(
+      // Un único frame entero, el más cercano: sin mezcla entre texturas.
+      const frameIndex = Math.min(
         FRAME_COUNT - 1,
-        Math.max(0, Math.floor(smoothIndex)),
+        Math.max(0, Math.round(smoothIndex)),
       );
-      const next = Math.min(FRAME_COUNT - 1, base + 1);
-
-      const directEntry = textures.get(base);
-      const entryA = directEntry ?? nearestTexture(base);
-      const entryB = directEntry ? (textures.get(next) ?? directEntry) : null;
-
-      uniforms.uTexA.value = entryA?.texture ?? placeholder;
-      uniforms.uTexB.value = entryB?.texture ?? placeholder;
-      uniforms.uMix.value =
-        entryA && entryB && entryA !== entryB ? smoothIndex - base : 0;
+      const entry = textures.get(frameIndex) ?? nearestTexture(frameIndex);
+      uniforms.uTexA.value = entry?.texture ?? placeholder;
 
       renderer.render(scene, camera);
 
-      prefetchTextures(smoothIndex);
-      trimTextures(smoothIndex);
+      prefetchTextures(frameIndex);
+      trimTextures(frameIndex);
     };
 
     animationFrame = requestAnimationFrame(tick);
