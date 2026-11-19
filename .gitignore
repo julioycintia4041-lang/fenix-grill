@@ -1,0 +1,13 @@
+node_modules
+.next
+out
+*.tsbuildinfo
+
+# Material de origen entregado para la secuencia (no se sirve ni se versiona)
+/Camera_moving_into_restaurant_in_999b8603_1080p-ezgif-split
+/Camera_moving_into_restaurant_in…_999b8603_1080p.mp4
+/logo-fenix-grill.jpeg
+/WhatsApp Unknown 2026-11-18 at 9.14.38 AM
+
+# Evidencia local de verificación
+/evidence
