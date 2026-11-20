@@ -1,6 +1,6 @@
 "use client";
 
-import { Flame, MapPin, MessageCircle, Phone } from "lucide-react";
+import { Flame, MapPin, MessageCircle } from "lucide-react";
 import { RESTAURANT_INFO } from "@/data/menu";
 
 export default function FooterInfo() {
@@ -22,7 +22,7 @@ export default function FooterInfo() {
           </p>
         </div>
 
-        {/* Ubicación y Contacto */}
+        {/* Ubicación (Cambio 3 - Prompt 2i: sin línea redundante de WhatsApp) */}
         <div className="space-y-2 text-xs flex flex-col items-center text-center md:items-start md:text-left">
           <h4 className="font-bold text-white uppercase tracking-wider mb-2 drop-shadow-[0_2px_8px_rgba(0,0,0,1)]">
             Visítanos
@@ -31,19 +31,12 @@ export default function FooterInfo() {
             <MapPin className="inline-block w-4 h-4 text-[#ff5a2b] shrink-0 mr-1.5 align-middle -mt-0.5" />
             <span>{RESTAURANT_INFO.address}</span>
           </p>
-          <p className="text-white/95 font-medium drop-shadow-[0_1px_4px_rgba(0,0,0,1)] text-center md:text-left">
-            <Phone className="inline-block w-4 h-4 text-[#0066ff] shrink-0 mr-1.5 align-middle -mt-0.5" />
-            <span>WhatsApp: {RESTAURANT_INFO.whatsapp_display}</span>
-          </p>
         </div>
 
-        {/* Canales Digitales */}
+        {/* Pedidos (Cambio 4 - Prompt 2i: sin título PEDIDOS Y REDES, texto exactamente 'Realiza tu pedido digital') */}
         <div className="space-y-3 text-xs flex flex-col items-center text-center md:items-start md:text-left">
-          <h4 className="font-bold text-white uppercase tracking-wider drop-shadow-[0_2px_8px_rgba(0,0,0,1)]">
-            Pedidos y Redes
-          </h4>
           <p className="text-white/90 font-medium drop-shadow-[0_1px_4px_rgba(0,0,0,1)] max-w-sm mx-auto md:mx-0">
-            Realiza tu pedido digital y lo recibimos al instante en cocina vía WhatsApp.
+            Realiza tu pedido digital
           </p>
           <div className="flex items-center justify-center md:justify-start gap-3 pt-1 w-full md:w-auto">
             <a

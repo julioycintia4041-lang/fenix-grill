@@ -91,11 +91,11 @@ export default function Navbar({
                 />
               </button>
 
-              {/* Panel desplegable de EXPLORAR EL MENÚ */}
+              {/* Panel desplegable de EXPLORAR EL MENÚ (Prompt 2i: visible completo en móvil) */}
               {isExploreOpen && (
                 <div
                   data-explore-menu-panel="true"
-                  className="absolute top-full left-0 mt-2 w-72 sm:w-80 rounded-2xl liquid-glass border border-white/20 p-3 shadow-2xl backdrop-blur-2xl z-50 animate-in fade-in zoom-in-95 duration-150 bg-[#0d0f18]/95"
+                  className="absolute top-full right-0 sm:left-0 sm:right-auto mt-2 w-72 max-w-[calc(100vw-32px)] sm:w-80 rounded-2xl liquid-glass border border-white/20 p-3 shadow-2xl backdrop-blur-2xl z-50 animate-in fade-in zoom-in-95 duration-150 bg-[#0d0f18]/95"
                 >
                   <div className="text-[10px] font-bold uppercase tracking-widest text-white/40 px-3 py-1 mb-1">
                     Categorías de la Carta

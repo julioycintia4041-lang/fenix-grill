@@ -68,25 +68,27 @@ export default function MenuCategorySection({
             </p>
           </div>
 
-          {/* Botones de navegación del carrusel en escritorio */}
-          <div className="flex items-center gap-2 self-end sm:self-auto">
-            <button
-              type="button"
-              aria-label={`Desplazar hacia la izquierda en ${category.name}`}
-              onClick={() => scroll("left")}
-              className="p-2.5 rounded-full liquid-glass hover:bg-white/10 transition-colors text-white active:scale-95 cursor-pointer"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <button
-              type="button"
-              aria-label={`Desplazar hacia la derecha en ${category.name}`}
-              onClick={() => scroll("right")}
-              className="p-2.5 rounded-full liquid-glass hover:bg-white/10 transition-colors text-white active:scale-95 cursor-pointer"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
+          {/* Botones de navegación del carrusel (ocultos si hay un solo ítem - Prompt 2i) */}
+          {category.items.length > 1 && (
+            <div className="flex items-center gap-2 self-end sm:self-auto">
+              <button
+                type="button"
+                aria-label={`Desplazar hacia la izquierda en ${category.name}`}
+                onClick={() => scroll("left")}
+                className="p-2.5 rounded-full liquid-glass hover:bg-white/10 transition-colors text-white active:scale-95 cursor-pointer"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button
+                type="button"
+                aria-label={`Desplazar hacia la derecha en ${category.name}`}
+                onClick={() => scroll("right")}
+                className="p-2.5 rounded-full liquid-glass hover:bg-white/10 transition-colors text-white active:scale-95 cursor-pointer"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
