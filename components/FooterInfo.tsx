@@ -8,8 +8,8 @@ export default function FooterInfo() {
     <footer className="relative z-10 border-t border-white/20 bg-black/40 backdrop-blur-xl py-12 px-4 sm:px-6 mt-16 text-white shadow-2xl shadow-black/60">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
         {/* Identidad */}
-        <div className="space-y-3">
-          <div className="flex items-center gap-2.5">
+        <div className="space-y-3 flex flex-col items-center text-center md:items-start md:text-left">
+          <div className="flex items-center justify-center md:justify-start gap-2.5">
             <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#ff3b00] to-[#0066ff] flex items-center justify-center shadow-md">
               <Flame className="w-4 h-4 text-white" />
             </div>
@@ -17,35 +17,35 @@ export default function FooterInfo() {
               {RESTAURANT_INFO.name}
             </span>
           </div>
-          <p className="text-xs text-white/90 leading-relaxed max-w-sm font-medium drop-shadow-[0_1px_4px_rgba(0,0,0,1)]">
+          <p className="text-xs text-white/90 leading-relaxed max-w-sm font-medium drop-shadow-[0_1px_4px_rgba(0,0,0,1)] mx-auto md:mx-0">
             {RESTAURANT_INFO.slogan}. Disfruta la mejor experiencia a la parrilla, carnes seleccionadas, cortes tiernos y el mejor ambiente.
           </p>
         </div>
 
         {/* Ubicación y Contacto */}
-        <div className="space-y-2 text-xs">
+        <div className="space-y-2 text-xs flex flex-col items-center text-center md:items-start md:text-left">
           <h4 className="font-bold text-white uppercase tracking-wider mb-2 drop-shadow-[0_2px_8px_rgba(0,0,0,1)]">
             Visítanos
           </h4>
-          <div className="flex items-start gap-2 text-white/95 font-medium drop-shadow-[0_1px_4px_rgba(0,0,0,1)]">
-            <MapPin className="w-4 h-4 text-[#ff5a2b] shrink-0 mt-0.5" />
+          <p className="text-white/95 font-medium drop-shadow-[0_1px_4px_rgba(0,0,0,1)] text-center md:text-left max-w-xs md:max-w-none">
+            <MapPin className="inline-block w-4 h-4 text-[#ff5a2b] shrink-0 mr-1.5 align-middle -mt-0.5" />
             <span>{RESTAURANT_INFO.address}</span>
-          </div>
-          <div className="flex items-center gap-2 text-white/95 font-medium drop-shadow-[0_1px_4px_rgba(0,0,0,1)]">
-            <Phone className="w-4 h-4 text-[#0066ff] shrink-0" />
+          </p>
+          <p className="text-white/95 font-medium drop-shadow-[0_1px_4px_rgba(0,0,0,1)] text-center md:text-left">
+            <Phone className="inline-block w-4 h-4 text-[#0066ff] shrink-0 mr-1.5 align-middle -mt-0.5" />
             <span>WhatsApp: {RESTAURANT_INFO.whatsapp_display}</span>
-          </div>
+          </p>
         </div>
 
         {/* Canales Digitales */}
-        <div className="space-y-3 text-xs">
+        <div className="space-y-3 text-xs flex flex-col items-center text-center md:items-start md:text-left">
           <h4 className="font-bold text-white uppercase tracking-wider drop-shadow-[0_2px_8px_rgba(0,0,0,1)]">
             Pedidos y Redes
           </h4>
-          <p className="text-white/90 font-medium drop-shadow-[0_1px_4px_rgba(0,0,0,1)]">
+          <p className="text-white/90 font-medium drop-shadow-[0_1px_4px_rgba(0,0,0,1)] max-w-sm mx-auto md:mx-0">
             Realiza tu pedido digital y lo recibimos al instante en cocina vía WhatsApp.
           </p>
-          <div className="flex items-center gap-3 pt-1">
+          <div className="flex items-center justify-center md:justify-start gap-3 pt-1 w-full md:w-auto">
             <a
               href="https://wa.me/584227347307"
               target="_blank"
