@@ -1,7 +1,7 @@
 "use client";
 
-import { Flame, MapPin, MessageCircle, Globe, Phone } from "lucide-react";
-import { RESTAURANT_INFO, WHATSAPP_NUMBER } from "@/data/menu";
+import { Flame, MapPin, MessageCircle, Phone } from "lucide-react";
+import { RESTAURANT_INFO } from "@/data/menu";
 
 export default function FooterInfo() {
   return (
@@ -59,9 +59,9 @@ export default function FooterInfo() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto pt-6 border-t border-white/15 flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] text-white/75 text-center md:text-left">
+      <div className="max-w-7xl mx-auto pt-6 border-t border-white/15 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/80 text-center sm:text-left">
         <p className="drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
-          © {new Date().getFullYear()} {RESTAURANT_INFO.name}. Todos los derechos reservados.
+          © 2026 FÉNIX GRILL BAR. Todos los derechos reservados.
         </p>
         <p className="font-medium text-white/90 drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
           Diseño y desarrollo web:{" "}
@@ -73,9 +73,6 @@ export default function FooterInfo() {
           >
             Nexo Digital Agency Pro
           </a>
-        </p>
-        <p className="drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
-          Carta Digital Demo con Scroll-Motion • San Cristóbal, Venezuela
         </p>
       </div>
     </footer>
