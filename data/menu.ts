@@ -147,8 +147,18 @@ export const FENIX_MENU_CATEGORIES: MenuCategory[] = rawMenu.categories.map((cat
 
 export const ALL_MENU_ITEMS: MenuItem[] = FENIX_MENU_CATEGORIES.flatMap((c) => c.items);
 
+export const PAYMENT_METHODS = [
+  "Zelle",
+  "Pago Móvil",
+  "Nequi",
+  "Efectivo",
+] as const;
+
+export type PaymentMethod = (typeof PAYMENT_METHODS)[number];
+
 export function buildWhatsAppMessage(params: {
   deliveryType: "delivery" | "pickup";
+  paymentMethod: PaymentMethod | string;
   customerName: string;
   customerPhone: string;
   address?: string;
@@ -166,6 +176,7 @@ export function buildWhatsAppMessage(params: {
     `🔥 *NUEVO PEDIDO — ${RESTAURANT_INFO.name}*`,
     `📍 *Sede:* ${RESTAURANT_INFO.address}`,
     `🛵 *Modalidad:* ${isDelivery ? "Entrega a Domicilio" : "Para Retirar en Local"}`,
+    `💳 *Método de pago:* ${params.paymentMethod || "Zelle"}`,
     `👤 *Cliente:* ${params.customerName.trim()}`,
     `📱 *Teléfono:* ${params.customerPhone.trim()}`,
   ];

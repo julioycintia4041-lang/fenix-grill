@@ -81,11 +81,11 @@ export default function ProductModal({
       role="dialog"
       aria-modal="true"
       data-modal-product="true"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md transition-opacity"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/85 backdrop-blur-md transition-opacity"
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-lg rounded-2xl liquid-glass overflow-hidden flex flex-col max-h-[90vh] border border-white/20 shadow-2xl"
+        className="relative w-full max-w-lg rounded-2xl liquid-glass overflow-hidden flex flex-col max-h-[85vh] sm:max-h-[88vh] border border-white/20 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Botón cerrar */}
@@ -93,35 +93,36 @@ export default function ProductModal({
           type="button"
           onClick={onClose}
           aria-label="Cerrar modal"
-          className="absolute top-3 right-3 z-20 p-2 rounded-full bg-black/60 hover:bg-black/90 text-white/80 hover:text-white transition-colors cursor-pointer border border-white/15"
+          className="absolute top-3 right-3 z-20 p-2 rounded-full bg-black/70 hover:bg-black/90 text-white/90 hover:text-white transition-colors cursor-pointer border border-white/20 backdrop-blur-md"
         >
           <X className="w-5 h-5" />
         </button>
 
-        {/* Cabecera con foto en marco 4:3 en alta resolución */}
-        <div className="relative w-full aspect-[4/3] shrink-0 overflow-hidden bg-black/70">
+        {/* Cabecera con foto protagonista optimizada en altura para dejar espacio al contenido */}
+        <div className="relative w-full h-44 sm:h-52 shrink-0 overflow-hidden bg-black/70">
           <Image
             src={item.photo}
             alt={item.name}
             fill
             sizes="500px"
             className="object-cover object-center"
+            priority
           />
-          <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none" />
+          <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/95 via-black/40 to-transparent pointer-events-none" />
           <div className="absolute bottom-3 left-4 z-10">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#ff5a2b] bg-black/70 px-2.5 py-1 rounded-md border border-white/10 backdrop-blur-md">
+            <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#ff5a2b] bg-black/80 px-2.5 py-1 rounded-md border border-white/15 backdrop-blur-md">
               {item.categoryName}
             </span>
           </div>
         </div>
 
-        {/* Cuerpo del modal scrolleable */}
-        <div className="p-5 sm:p-6 overflow-y-auto no-scrollbar space-y-5 bg-black/60 flex-1">
+        {/* Cuerpo del modal scrolleable con padding inferior amplio (sin cortes) */}
+        <div className="p-5 sm:p-6 overflow-y-auto space-y-5 bg-black/75 flex-1 min-h-0 pb-16 sm:pb-20">
           <div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight glass-text">
+            <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
               {item.name}
             </h2>
-            <p className="mt-2 text-sm text-white/80 leading-relaxed">
+            <p className="mt-2 text-xs sm:text-sm text-white/90 leading-relaxed font-normal">
               {item.desc}
             </p>
           </div>
@@ -227,8 +228,8 @@ export default function ProductModal({
           </div>
         </div>
 
-        {/* Pie con selector de cantidad y botón agregar: SIN precios ni totales */}
-        <div className="p-4 sm:p-5 border-t border-white/10 bg-black/85 flex items-center justify-between gap-4">
+        {/* Barra fija inferior: sin cubrir el contenido, con shrink-0 */}
+        <div className="shrink-0 p-4 sm:p-5 border-t border-white/10 bg-black/90 backdrop-blur-xl flex items-center justify-between gap-4 z-10">
           {/* Contador de cantidad */}
           <div className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-full px-3 py-1.5">
             <button

@@ -47,7 +47,7 @@ export default function FooterInfo() {
           </p>
           <div className="flex items-center gap-3 pt-1">
             <a
-              href={`https://wa.me/${WHATSAPP_NUMBER.replace(/\D/g, "")}`}
+              href="https://wa.me/584227347307"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#25D366]/20 border border-[#25D366]/40 text-[#25D366] hover:bg-[#25D366]/30 transition-colors font-bold text-xs"

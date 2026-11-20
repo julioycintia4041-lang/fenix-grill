@@ -12,10 +12,13 @@ import {
   MapPin,
   Store,
   Bike,
+  Check,
 } from "lucide-react";
 import {
   MenuItem,
   RESTAURANT_INFO,
+  PAYMENT_METHODS,
+  PaymentMethod,
   buildWhatsAppMessage,
   buildWhatsAppUrl,
 } from "@/data/menu";
@@ -47,6 +50,7 @@ export default function CartDrawer({
   onClearCart,
 }: CartDrawerProps) {
   const [deliveryType, setDeliveryType] = useState<"delivery" | "pickup">("delivery");
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("Zelle");
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [address, setAddress] = useState("");
@@ -67,38 +71,18 @@ export default function CartDrawer({
     };
   }, [isOpen]);
 
-  const handleSendOrder = () => {
-    if (items.length === 0) {
-      setFormError("Agrega al menos un plato a tu pedido.");
-      return;
-    }
-    if (!customerName.trim()) {
-      setFormError("Por favor ingresa tu nombre completo.");
-      return;
-    }
-    if (!customerPhone.trim()) {
-      setFormError("Por favor ingresa tu número de teléfono.");
-      return;
-    }
-    if (deliveryType === "delivery" && !address.trim()) {
-      setFormError("Por favor ingresa tu dirección de entrega.");
-      return;
-    }
+  // Construcción dinámica de la URL de WhatsApp con el pedido y método de pago
+  const whatsappMessage = buildWhatsAppMessage({
+    deliveryType,
+    paymentMethod,
+    customerName: customerName.trim() || "Cliente",
+    customerPhone: customerPhone.trim() || "Por coordinar",
+    address: address.trim(),
+    notes: notes.trim(),
+    items,
+  });
 
-    setFormError("");
-
-    const message = buildWhatsAppMessage({
-      deliveryType,
-      customerName,
-      customerPhone,
-      address,
-      notes,
-      items,
-    });
-
-    const url = buildWhatsAppUrl(message);
-    window.open(url, "_blank", "noopener,noreferrer");
-  };
+  const whatsappUrl = buildWhatsAppUrl(whatsappMessage);
 
   return (
     <>
@@ -119,7 +103,7 @@ export default function CartDrawer({
         }`}
       >
         {/* Cabecera del drawer */}
-        <div className="p-5 border-b border-white/10 flex items-center justify-between bg-black/40">
+        <div className="p-5 border-b border-white/10 flex items-center justify-between bg-black/40 shrink-0">
           <div className="flex items-center gap-2.5">
             <div className="p-2 rounded-xl bg-[#ff5a2b]/20 border border-[#ff5a2b]/40 text-[#ff5a2b]">
               <ShoppingBag className="w-5 h-5" />
@@ -291,6 +275,41 @@ export default function CartDrawer({
                 </div>
               </div>
 
+              {/* Método de pago (Cambio 3 - Prompt 2c) */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold uppercase tracking-wider text-white">
+                    Método de pago <span className="text-[#ff5a2b]">*</span>
+                  </label>
+                  <span className="text-[10px] text-white/50">Obligatorio</span>
+                </div>
+                <div data-payment-options="true" className="grid grid-cols-2 gap-2">
+                  {PAYMENT_METHODS.map((method) => {
+                    const isSelected = paymentMethod === method;
+                    return (
+                      <button
+                        key={method}
+                        type="button"
+                        data-payment-method={method}
+                        onClick={() => setPaymentMethod(method)}
+                        className={`flex items-center justify-between p-2.5 rounded-xl border text-xs font-semibold transition-all cursor-pointer ${
+                          isSelected
+                            ? "bg-emerald-500/20 border-emerald-400 text-white shadow-md shadow-emerald-950/40"
+                            : "bg-white/5 border-white/10 text-white/70 hover:bg-white/10"
+                        }`}
+                      >
+                        <span>{method}</span>
+                        {isSelected && (
+                          <span className="w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center text-black">
+                            <Check className="w-2.5 h-2.5 stroke-[3]" />
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
               {/* Información de sede */}
               <div className="p-3 rounded-xl bg-white/5 border border-white/10 flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-[#ff5a2b] shrink-0 mt-0.5" />
@@ -304,7 +323,7 @@ export default function CartDrawer({
               <div className="space-y-2.5">
                 <div>
                   <label className="text-[11px] font-bold uppercase tracking-wider text-white/80 block mb-1">
-                    Tu Nombre Completo <span className="text-[#ff5a2b]">*</span>
+                    Tu Nombre Completo
                   </label>
                   <input
                     type="text"
@@ -317,7 +336,7 @@ export default function CartDrawer({
 
                 <div>
                   <label className="text-[11px] font-bold uppercase tracking-wider text-white/80 block mb-1">
-                    Número de Teléfono / WhatsApp <span className="text-[#ff5a2b]">*</span>
+                    Número de Teléfono / WhatsApp
                   </label>
                   <input
                     type="tel"
@@ -331,7 +350,7 @@ export default function CartDrawer({
                 {deliveryType === "delivery" && (
                   <div>
                     <label className="text-[11px] font-bold uppercase tracking-wider text-white/80 block mb-1">
-                      Dirección exacta de entrega <span className="text-[#ff5a2b]">*</span>
+                      Dirección exacta de entrega
                     </label>
                     <textarea
                       rows={2}
@@ -366,22 +385,30 @@ export default function CartDrawer({
           )}
         </div>
 
-        {/* Pie con botón de WhatsApp: SIN precios, subtotales ni totales */}
+        {/* Pie con enlace directo a WhatsApp (Cambio 5 - Prompt 2c): SIN precios, subtotales ni totales */}
         {items.length > 0 && (
-          <div className="p-5 border-t border-white/10 bg-black/85 space-y-3">
+          <div className="p-5 border-t border-white/10 bg-black/85 space-y-3 shrink-0">
             <div className="flex items-center justify-between text-xs text-white/60">
               <span>Precios:</span>
               <span className="font-semibold text-white/80">A confirmar por el local</span>
             </div>
 
-            <button
-              type="button"
-              onClick={handleSendOrder}
-              className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-black font-extrabold px-6 py-3.5 text-xs uppercase tracking-wider transition-all active:scale-95 shadow-lg shadow-emerald-950/40 cursor-pointer"
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-whatsapp-order-btn="true"
+              onClick={(e) => {
+                if (items.length === 0) {
+                  e.preventDefault();
+                  setFormError("Agrega al menos un plato a tu pedido.");
+                }
+              }}
+              className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-black font-extrabold px-6 py-3.5 text-xs uppercase tracking-wider transition-all active:scale-95 shadow-lg shadow-emerald-950/40 cursor-pointer text-center select-none"
             >
               <MessageCircle className="w-4 h-4 fill-black" />
               <span>Confirmar pedido vía WhatsApp</span>
-            </button>
+            </a>
           </div>
         )}
       </aside>
