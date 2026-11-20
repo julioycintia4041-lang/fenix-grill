@@ -20,12 +20,12 @@ export default function MenuProductCard({
       data-item-id={item.id}
       data-category-id={item.categoryId}
       onClick={() => onOpenModal(item)}
-      className="group snap-start shrink-0 self-stretch w-[82vw] max-w-[300px] sm:max-w-none sm:w-[340px] md:w-[380px] lg:w-[400px] rounded-2xl liquid-glass-card overflow-hidden flex flex-col cursor-pointer"
+      className="group snap-start shrink-0 self-stretch w-[82vw] max-w-[300px] sm:max-w-none sm:w-[340px] md:w-[380px] lg:w-[400px] rounded-2xl sm:rounded-3xl bg-black/40 backdrop-blur-xl border border-white/20 shadow-2xl shadow-black/60 hover:border-white/40 hover:shadow-black/80 transition-all duration-300 overflow-hidden flex flex-col cursor-pointer"
     >
       {/* Marco fijo 4:3 para foto protagonista en alta resolución */}
       <div
         data-card-photo-frame="true"
-        className="relative w-full aspect-[4/3] shrink-0 overflow-hidden bg-black/60"
+        className="relative w-full aspect-[4/3] shrink-0 overflow-hidden bg-black/40"
       >
         <Image
           src={item.photo}
@@ -35,7 +35,7 @@ export default function MenuProductCard({
           className="object-cover object-center select-none pointer-events-none group-hover:scale-105 transition-transform duration-500"
           draggable={false}
         />
-        <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-black/80 via-black/30 to-transparent pointer-events-none" />
+        <div className="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
 
         {/* Badge de categoría / opciones */}
         <div className="absolute top-3 left-3 flex flex-wrap gap-1.5 z-10">
@@ -57,23 +57,23 @@ export default function MenuProductCard({
         </div>
       </div>
 
-      {/* Contenido de la tarjeta */}
-      <div className="p-4 sm:p-5 flex flex-col flex-1 bg-gradient-to-b from-black/50 via-black/75 to-black/90">
-        <h3 className="text-xl sm:text-2xl font-bold text-white group-hover:text-[#ff5a2b] transition-colors leading-tight glass-text">
+      {/* Contenido de la tarjeta con Liquid Glass ligero (translúcido) */}
+      <div className="p-4 sm:p-5 flex flex-col flex-1 bg-transparent">
+        <h3 className="text-xl sm:text-2xl font-bold text-white group-hover:text-[#ff5a2b] transition-colors leading-tight drop-shadow-[0_2px_8px_rgba(0,0,0,1)]">
           {item.name}
         </h3>
 
-        <p className="mt-2 text-xs sm:text-sm text-white/85 leading-relaxed glass-text">
+        <p className="mt-2 text-xs sm:text-sm text-white font-medium leading-relaxed drop-shadow-[0_2px_6px_rgba(0,0,0,1)]">
           {item.desc}
         </p>
 
         {/* Lista fija de incluidos para el Almuerzo */}
         {item.includedItems && item.includedItems.length > 0 && (
-          <div className="mt-3 p-2.5 rounded-lg bg-black/40 border border-white/10 space-y-1">
-            <span className="text-[10px] uppercase font-bold text-[#ff5a2b] tracking-wider block">
+          <div className="mt-3 p-2.5 rounded-xl bg-black/30 border border-white/15 space-y-1 backdrop-blur-sm">
+            <span className="text-[10px] uppercase font-bold text-[#ff5a2b] tracking-wider block drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]">
               Incluye:
             </span>
-            <ul className="text-[11px] text-white/90 space-y-0.5 list-disc list-inside">
+            <ul className="text-[11px] text-white space-y-0.5 list-disc list-inside font-medium drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
               {item.includedItems.map((inc, i) => (
                 <li key={i}>{inc}</li>
               ))}
@@ -83,20 +83,20 @@ export default function MenuProductCard({
 
         {/* Indicador de opciones si aplica */}
         {item.hasOptions && item.categoryId === 2 && (
-          <div className="mt-2.5 flex items-center gap-1.5 text-[11px] text-white/60">
+          <div className="mt-2.5 flex items-center gap-1.5 text-[11px] text-white/90 font-medium drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
             <span className="w-1.5 h-1.5 rounded-full bg-[#ff5a2b]" />
             <span>Acompañante a elección (Papas fritas o Yuca)</span>
           </div>
         )}
         {item.hasOptions && item.categoryId === 3 && (
-          <div className="mt-2.5 flex items-center gap-1.5 text-[11px] text-white/60">
+          <div className="mt-2.5 flex items-center gap-1.5 text-[11px] text-white/90 font-medium drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
             <span className="w-1.5 h-1.5 rounded-full bg-[#3b82f6]" />
             <span>7 Proteínas a elección • 3 Acompañantes</span>
           </div>
         )}
 
         {/* Pie de tarjeta anclado abajo: SIN precio (DEMO) */}
-        <div data-card-footer="true" className="mt-auto pt-4 border-t border-white/10 flex items-center justify-between gap-3">
+        <div data-card-footer="true" className="mt-auto pt-4 border-t border-white/15 flex items-center justify-between gap-3">
           {/* Si el precio no es null en el futuro, se muestra aquí */}
           {item.price !== null ? (
             <div className="flex flex-col">
@@ -104,7 +104,7 @@ export default function MenuProductCard({
               <span className="text-lg font-bold text-[#ff5a2b]">${item.price}</span>
             </div>
           ) : (
-            <div className="flex items-center gap-1.5 text-[11px] text-white/50">
+            <div className="flex items-center gap-1.5 text-[11px] text-white/80 font-medium drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)]">
               <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
               <span>Disponible</span>
             </div>
@@ -117,7 +117,7 @@ export default function MenuProductCard({
                 e.stopPropagation();
                 onOpenModal(item);
               }}
-              className="inline-flex items-center gap-1.5 rounded-full bg-fenix-fire hover:opacity-95 text-white font-bold px-4 py-2 text-xs uppercase tracking-wider transition-all active:scale-95 shadow-lg shadow-orange-950/40 cursor-pointer"
+              className="inline-flex items-center gap-1.5 rounded-full bg-fenix-fire hover:opacity-95 text-white font-bold px-4 py-2 text-xs uppercase tracking-wider transition-all active:scale-95 shadow-lg shadow-orange-950/40 cursor-pointer drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]"
             >
               <SlidersHorizontal className="w-3.5 h-3.5" />
               <span>Personalizar +</span>
@@ -129,7 +129,7 @@ export default function MenuProductCard({
                 e.stopPropagation();
                 onQuickAdd(item);
               }}
-              className="inline-flex items-center gap-1.5 rounded-full bg-fenix-blue hover:opacity-95 text-white font-bold px-4 py-2 text-xs uppercase tracking-wider transition-all active:scale-95 shadow-lg shadow-blue-950/40 cursor-pointer"
+              className="inline-flex items-center gap-1.5 rounded-full bg-fenix-blue hover:opacity-95 text-white font-bold px-4 py-2 text-xs uppercase tracking-wider transition-all active:scale-95 shadow-lg shadow-blue-950/40 cursor-pointer drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]"
             >
               <Plus className="w-3.5 h-3.5 stroke-[3]" />
               <span>Agregar</span>
