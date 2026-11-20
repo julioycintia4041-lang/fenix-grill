@@ -98,8 +98,9 @@ export default function CartDrawer({
       {/* Drawer panel */}
       <aside
         data-cart-drawer="true"
+        data-lenis-prevent
         aria-hidden={!isOpen}
-        className={`fixed top-0 right-0 bottom-0 z-50 w-full max-w-md liquid-glass border-l border-white/20 shadow-2xl flex flex-col transition-transform duration-300 ease-out bg-[#0a0a0f]/95 ${
+        className={`fixed top-0 right-0 bottom-0 z-50 w-full max-w-md liquid-glass border-l border-white/20 shadow-2xl flex flex-col transition-transform duration-300 ease-out bg-[#0a0a0f]/95 h-[100dvh] max-h-[100dvh] overscroll-contain ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -141,8 +142,11 @@ export default function CartDrawer({
           </div>
         </div>
 
-        {/* Lista de ítems o mensaje vacío */}
-        <div className="flex-1 overflow-y-auto no-scrollbar p-5 space-y-4">
+        {/* Lista de ítems con scroll vertical garantizado (Prompt 2h) */}
+        <div
+          data-lenis-prevent
+          className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-4 sm:p-5 space-y-4 touch-pan-y"
+        >
           {items.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-center p-6 text-white/50 space-y-3">
               <div className="p-4 rounded-full bg-white/5 border border-white/10">
