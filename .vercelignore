@@ -1,0 +1,14 @@
+# Archivos de evidencia y grabaciones locales
+evidence/
+*.mp4
+*.webm
+
+# Carpetas de trabajo temporal con frames viejos
+Camera_moving_into_restaurant_in*
+frames-fenix-grill-v2/
+frames-fenix-grill-v3/
+WhatsApp Unknown*
+
+# Scripts y utilidades
+scripts/
+logo-fenix-grill.jpeg
