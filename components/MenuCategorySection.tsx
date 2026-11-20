@@ -48,18 +48,23 @@ export default function MenuCategorySection({
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-6">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-          <div>
+          <div className="inline-block p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-black/85 via-black/75 to-black/60 backdrop-blur-md border border-white/15 shadow-xl shadow-black/80 max-w-xl">
             <div className="flex items-center gap-2 mb-2">
-              <span className="p-2 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md">
+              <span className="p-1.5 rounded-lg bg-white/10 border border-white/10">
                 {getCategoryIcon()}
               </span>
-              <span className="text-xs uppercase tracking-widest font-bold text-[#ff5a2b]">
+              <span className="text-xs uppercase tracking-widest font-extrabold text-[#ff5a2b] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
                 {getCategoryBadge()}
               </span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight glass-text">
+            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight drop-shadow-[0_4px_12px_rgba(0,0,0,0.95)]">
               {category.name}
             </h2>
+            <p className="mt-1 text-xs sm:text-sm text-white/85 font-medium drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]">
+              {category.id === 1 && "Recetas artesanales al carbón con los mejores cortes y vegetales frescos."}
+              {category.id === 2 && "Selección de carnes tiernas a las brasas, acompañadas con papas o yuca."}
+              {category.id === 3 && "Almuerzo completo preparado al momento con 7 opciones de proteína."}
+            </p>
           </div>
 
           {/* Botones de navegación del carrusel en escritorio */}

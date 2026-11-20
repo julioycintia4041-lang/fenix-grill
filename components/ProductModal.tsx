@@ -98,17 +98,18 @@ export default function ProductModal({
           <X className="w-5 h-5" />
         </button>
 
-        {/* Cabecera con foto en marco 4:3 sobre degradado de vidrio */}
-        <div className="relative w-full aspect-[16/10] shrink-0 overflow-hidden bg-gradient-to-b from-white/10 via-black/40 to-black/80 p-4">
+        {/* Cabecera con foto en marco 4:3 en alta resolución */}
+        <div className="relative w-full aspect-[4/3] shrink-0 overflow-hidden bg-black/70">
           <Image
             src={item.photo}
             alt={item.name}
             fill
             sizes="500px"
-            className="object-contain object-center drop-shadow-[0_16px_28px_rgba(0,0,0,0.8)] p-2"
+            className="object-cover object-center"
           />
-          <div className="absolute bottom-3 left-4">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[#ff5a2b] bg-black/60 px-2.5 py-1 rounded-md border border-white/10">
+          <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none" />
+          <div className="absolute bottom-3 left-4 z-10">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#ff5a2b] bg-black/70 px-2.5 py-1 rounded-md border border-white/10 backdrop-blur-md">
               {item.categoryName}
             </span>
           </div>

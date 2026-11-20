@@ -22,24 +22,23 @@ export default function MenuProductCard({
       onClick={() => onOpenModal(item)}
       className="group snap-start shrink-0 self-stretch w-[82vw] max-w-[300px] sm:max-w-none sm:w-[340px] md:w-[380px] lg:w-[400px] rounded-2xl liquid-glass-card overflow-hidden flex flex-col cursor-pointer"
     >
-      {/* Marco fijo 4:3 para foto protagonista recortada sobre vidrio líquido */}
+      {/* Marco fijo 4:3 para foto protagonista en alta resolución */}
       <div
         data-card-photo-frame="true"
-        className="relative w-full aspect-[4/3] shrink-0 overflow-hidden bg-gradient-to-b from-white/5 via-transparent to-black/40 p-4 sm:p-5"
+        className="relative w-full aspect-[4/3] shrink-0 overflow-hidden bg-black/60"
       >
-        <div className="relative h-full w-full">
-          <Image
-            src={item.photo}
-            alt={item.name}
-            fill
-            sizes="(max-width: 639px) 280px, (max-width: 767px) 340px, (max-width: 1023px) 380px, 400px"
-            className="object-contain object-center select-none pointer-events-none drop-shadow-[0_12px_24px_rgba(0,0,0,0.65)] group-hover:scale-105 transition-transform duration-300"
-            draggable={false}
-          />
-        </div>
+        <Image
+          src={item.photo}
+          alt={item.name}
+          fill
+          sizes="(max-width: 639px) 300px, (max-width: 767px) 340px, (max-width: 1023px) 380px, 400px"
+          className="object-cover object-center select-none pointer-events-none group-hover:scale-105 transition-transform duration-500"
+          draggable={false}
+        />
+        <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-black/80 via-black/30 to-transparent pointer-events-none" />
 
         {/* Badge de categoría / opciones */}
-        <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
+        <div className="absolute top-3 left-3 flex flex-wrap gap-1.5 z-10">
           {item.categoryId === 1 && (
             <span className="rounded-full bg-blue-500/20 border border-blue-400/40 px-2.5 py-0.5 text-[10px] font-bold text-blue-300 tracking-wider uppercase backdrop-blur-md">
               Hamburguesa
