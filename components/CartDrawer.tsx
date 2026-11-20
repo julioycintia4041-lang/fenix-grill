@@ -13,6 +13,7 @@ import {
   Store,
   Bike,
   Check,
+  ArrowLeft,
 } from "lucide-react";
 import {
   MenuItem,
@@ -385,14 +386,15 @@ export default function CartDrawer({
           )}
         </div>
 
-        {/* Pie con enlace directo a WhatsApp (Cambio 5 - Prompt 2c): SIN precios, subtotales ni totales */}
+        {/* Pie con enlace directo a WhatsApp y botón secundario "Seguir con el pedido" (Prompt 2d) */}
         {items.length > 0 && (
-          <div className="p-5 border-t border-white/10 bg-black/85 space-y-3 shrink-0">
-            <div className="flex items-center justify-between text-xs text-white/60">
+          <div className="p-5 border-t border-white/10 bg-black/85 space-y-2.5 shrink-0">
+            <div className="flex items-center justify-between text-xs text-white/60 mb-1">
               <span>Precios:</span>
               <span className="font-semibold text-white/80">A confirmar por el local</span>
             </div>
 
+            {/* Botón principal: Confirmar pedido vía WhatsApp */}
             <a
               href={whatsappUrl}
               target="_blank"
@@ -409,6 +411,17 @@ export default function CartDrawer({
               <MessageCircle className="w-4 h-4 fill-black" />
               <span>Confirmar pedido vía WhatsApp</span>
             </a>
+
+            {/* Botón secundario: Seguir con el pedido */}
+            <button
+              type="button"
+              data-continue-order-btn="true"
+              onClick={onClose}
+              className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-white/10 hover:bg-white/15 border border-white/15 text-white/90 hover:text-white font-bold px-6 py-3 text-xs uppercase tracking-wider transition-all active:scale-95 cursor-pointer text-center select-none"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Seguir con el pedido</span>
+            </button>
           </div>
         )}
       </aside>
